@@ -6,6 +6,8 @@ import (
 	"io"
 	mathrand "math/rand"
 	"reflect"
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -72,4 +74,65 @@ func RandomString(length int) string {
 		b[i] = letters[mathrand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+// AgentToOs 从 agent 判断系统
+func AgentToOs(agent string) string {
+	// 判断是否包含 'win' 并匹配特定的 Windows 版本
+	if strings.Contains(strings.ToLower(agent), "win") {
+		if matched, _ := regexp.MatchString(`nt 6.1`, agent); matched {
+			return "Windows 7"
+		}
+		if matched, _ := regexp.MatchString(`nt 6.2`, agent); matched {
+			return "Windows 8"
+		}
+		if matched, _ := regexp.MatchString(`nt 10.0`, agent); matched {
+			return "Windows 10"
+		}
+		if matched, _ := regexp.MatchString(`nt 11.0`, agent); matched {
+			return "Windows 11"
+		}
+		if matched, _ := regexp.MatchString(`nt 5.1`, agent); matched {
+			return "Windows XP"
+		}
+	}
+
+	// 判断是否包含 'linux'
+	if strings.Contains(strings.ToLower(agent), "linux") {
+		return "Linux"
+	}
+
+	// 判断是否包含 'mac'
+	if strings.Contains(strings.ToLower(agent), "mac") {
+		return "Mac"
+	}
+
+	// 默认返回 Unknown
+	return "Unknown"
+}
+
+// AgentToBrowser 从 agent 判断浏览器
+func AgentToBrowser(agent string) string {
+	// 判断浏览器类型
+	if strings.Contains(strings.ToLower(agent), "msie") {
+		return "MSIE"
+	}
+	if strings.Contains(strings.ToLower(agent), "edg") {
+		return "Edge"
+	}
+	if strings.Contains(strings.ToLower(agent), "chrome") {
+		return "Chrome"
+	}
+	if strings.Contains(strings.ToLower(agent), "firefox") {
+		return "Firefox"
+	}
+	if strings.Contains(strings.ToLower(agent), "safari") {
+		return "Safari"
+	}
+	if strings.Contains(strings.ToLower(agent), "opera") {
+		return "Opera"
+	}
+
+	// 默认返回 Unknown
+	return "Unknown"
 }

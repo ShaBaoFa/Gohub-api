@@ -4,6 +4,7 @@ import (
 	"gohub/bootstrap"
 	"gohub/pkg/config"
 	"gohub/pkg/console"
+	"gohub/pkg/event"
 	"gohub/pkg/logger"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +32,11 @@ func runWeb(cmd *cobra.Command, args []string) {
 
 	// 初始化路由绑定
 	bootstrap.SetupRoute(router)
+
+	// 初始化事件监听器
+	bootstrap.SetupEventBus()
+
+	defer event.CloseWait()
 
 	// 运行服务器
 	err := router.Run(":" + config.Get("app.port"))
